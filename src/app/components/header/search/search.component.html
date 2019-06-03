@@ -1,0 +1,25 @@
+<a (click)="refresh()" title="Refresh" class="search-button search-button--refresh icon-button">
+  <svg height="25px" width="25px">
+    <use xlink:href="#refresh"></use>
+  </svg>
+</a>
+
+<input class="search-input"
+       placeholder="movie title"
+       [formControl]="movieTitleControl"
+       [matAutocomplete]="auto"
+       (keypress)="initiateSearch($event)">
+
+<a (click)="search()" title="Search" class="search-button icon-button">
+  <svg height="23px" width="23px">
+    <use xlink:href="#search"></use>
+  </svg>
+</a>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option
+    *ngFor="let movie of movies"
+    [value]="movie.Title"
+    (click)="searchById(movie.imdbID)"
+  >{{movie.Title}}</mat-option>
+</mat-autocomplete>

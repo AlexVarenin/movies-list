@@ -1,0 +1,25 @@
+$main-font: "OpenSans", sans-serif;
+
+
+// NEUTRAL COLORS
+
+$clr-white: #fff;
+$clr-black: #000;
+$clr-black_text: #141414;
+
+$background-clr: #f3f6fa;
+
+$purple-dark: #651f94;
+
+$header-gradient: linear-gradient(to right, $purple-dark, #978cf5);
+$header-shadow: 0 2px 10px 0 rgba(178, 131, 236, .6);
+$block-shadow: 0 2px 10px 0 rgba(0, 0, 0, .2);
+
+$desktop-xl: 1750px;
+$desktop-l: 1680px;//+
+$desktop-m: 1366px;
+$desktop-s: 1280px;
+$tablet-l: 1024px;//+
+$tablet-m: 768px;
+$mobile-m: 640px;//+
+$mobile-s: 480px;

@@ -1,0 +1,115 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+
+  &:active {
+    outline: none;
+  }
+}
+
+input, textarea {
+  background: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+textarea {
+  overflow: auto
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  &:disabled {
+    opacity: .8;
+    cursor: not-allowed;
+  }
+}
+
+body {
+  font-family: $main-font;
+  background: $background-clr;
+  min-width: 320px;
+}
+
+.main-layout {
+  width: $desktop-s;
+  padding: 0 20px;
+  margin: 0 auto;
+
+  @include to($desktop-s) {
+    width: 100%;
+  }
+}
+
+.default-modal {
+  width: $mobile-m;
+}
+
+.modal {
+  min-width: 208px;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__button {
+    min-width: 150px;
+    & + & {
+      margin-left: 20px;
+    }
+  }
+
+  &__body {
+    font-size: 24px;
+
+    @include to($mobile-m) {
+      font-size: 14px;
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 30px;
+  }
+
+  &__content {
+    padding: 40px 0;
+  }
+}
+
+.mat-raised-button .mat-button-wrapper {
+  font-size: 24px;
+  line-height: 2;
+  font-weight: 400;
+
+  @include to($mobile-m) {
+    font-size: 18px;
+  }
+}
+
+.icon-button {
+  cursor: pointer;
+  display: inline-block;
+  min-width: 40px;
+  height: 40px;
+  border: none;
+  padding: 9px;
+  color: $purple-dark;
+  text-align: center;
+  line-height: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+

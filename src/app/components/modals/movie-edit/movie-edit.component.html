@@ -1,0 +1,97 @@
+<div class="modal">
+  <div class="modal__body">
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="modal__field">
+        <input matInput
+               [readonly]="viewMode"
+               placeholder="Title"
+               formControlName="Title"
+               [errorStateMatcher]="matcher"
+               [value]="form.get('Title').value | movieTitle">
+
+        <mat-error *ngIf="form.get('Title').hasError('required')">
+          Title required
+        </mat-error>
+
+        <mat-error *ngIf="form.get('Title').hasError('titleExists')">
+          Title should be unique
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="modal__field">
+        <input matInput
+               [readonly]="viewMode"
+               placeholder="Year"
+               formControlName="Year"
+               [min]="minDate"
+               [max]="maxDate"
+               [errorStateMatcher]="matcher"
+               [matDatepicker]="dp">
+        <mat-datepicker-toggle [hidden]="viewMode" matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp
+                        [hidden]="viewMode"
+                        startView="multi-year"
+                        (yearSelected)="onYearSelected($event, dp)"
+                        panelClass="example-month-picker">
+        </mat-datepicker>
+
+        <mat-error *ngIf="form.get('Year').hasError('required')">
+          Year required
+        </mat-error>
+
+        <mat-error *ngIf="form.get('Year').hasError('yearNotValid')">
+          Year should be from 1895 to current year
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="modal__field">
+        <input matInput
+               [readonly]="viewMode"
+               placeholder="Runtime, min"
+               formControlName="Runtime"
+               type="number"
+               [value]="form.get('Runtime').value | movieRuntime : movie.imdbID">
+
+        <mat-error *ngIf="form.get('Runtime').hasError('required')">
+          Runtime required
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="modal__field">
+        <input matInput
+               [readonly]="viewMode"
+               placeholder="Genre"
+               formControlName="Genre"
+               [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="form.get('Genre').hasError('required')">
+          Genre required
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field class="modal__field">
+        <input matInput
+               [readonly]="viewMode"
+               placeholder="Director"
+               formControlName="Director"
+               [errorStateMatcher]="matcher"
+               [value]="form.get('Director').value | movieDirector : movie.imdbID">
+
+        <mat-error *ngIf="form.get('Director').hasError('required')">
+          Director required
+        </mat-error>
+
+      </mat-form-field>
+
+      <button *ngIf="!viewMode" type="button" class="modal__button" mat-raised-button (click)="cancelForm()">Cancel</button>
+      <button *ngIf="!viewMode" type="submit" class="modal__button" mat-raised-button color="primary">Save</button>
+      <button *ngIf="viewMode" type="button" class="modal__button" mat-raised-button color="primary" (click)="cancelForm()">Close</button>
+
+    </form>
+  </div>
+</div>

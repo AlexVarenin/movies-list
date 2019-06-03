@@ -1,0 +1,97 @@
+@import '../../../../scss/variables';
+@import '../../../../scss/mixins';
+
+.movies {
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  &__title {
+    font-weight: 600;
+    padding-left: 150px;
+    font-size: 42px;
+    padding-bottom: 40px;
+
+  }
+
+  &__subtitle {
+    font-size: 30px;
+
+    & + & {
+      padding-bottom: 40px;
+    }
+  }
+
+  @include to($desktop-m) {
+    &__title {
+      padding-left: 180px;
+      font-size: 36px;
+      padding-bottom: 60px;
+
+    }
+
+    &__subtitle {
+      font-size: 24px;
+    }
+  }
+
+  @include to($mobile-m) {
+    &__title {
+      font-size: 30px;
+      padding-bottom: 60px;
+
+    }
+
+    &__subtitle {
+      font-size: 20px;
+    }
+  }
+
+  @include to($mobile-s) {
+    &__title {
+      padding-left: 0;
+      padding-top: 80px;
+      padding-bottom: 20px;
+    }
+  }
+
+  &__action-buttons {
+    min-width: 80px;
+  }
+
+  &__list {
+    margin-top: 40px;
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      padding: 15px;
+      background: $clr-white;
+      border-radius: 8px;
+      box-shadow: $block-shadow;
+      cursor: pointer;
+
+      & + & {
+        margin-top: 15px;
+      }
+    }
+    &-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.5;
+      font-size: 20px;
+      @include to($desktop-m) {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.icon-button {
+  transition: transform .3s ease;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+}

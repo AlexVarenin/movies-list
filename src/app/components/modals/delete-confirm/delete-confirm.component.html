@@ -1,0 +1,15 @@
+<div class="modal">
+  <div class="modal__body">
+    <h3 class="modal__content">
+      Are you sure you want to delete {{movie.Title | movieTitle}}?
+    </h3>
+
+    <a (click)="onClose()" mat-raised-button class="modal__button">
+      Cancel
+    </a>
+
+    <a (click)="onConfirm()" mat-raised-button color="primary" class="modal__button">
+      Confirm
+    </a>
+  </div>
+</div>

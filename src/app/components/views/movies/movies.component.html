@@ -1,0 +1,33 @@
+<div class="movies main-layout">
+  <h1 class="movies__title">Aloha! You're on Bender's favourite movies site</h1>
+  <p class="movies__subtitle">Here you can see the list of movies</p>
+  <p class="movies__subtitle">Actually... If you don't like Futurama you can search for the movie you want</p>
+
+  <a (click)="openAddNewModal()" mat-raised-button color="primary">
+    Add new
+  </a>
+
+  <ul class="movies__list">
+    <li class="movies__list-item"
+        *ngFor="let movie of movies"
+        (click)="openViewModal(movie.imdbID)"
+    >
+
+      <h2 class="movies__list-title">{{movie.Title | movieTitle}}</h2>
+
+      <div class="movies__action-buttons">
+        <a (click)="openEditModal(movie.imdbID); $event.stopImmediatePropagation()" title="Edit" class="icon-button">
+          <svg height="20px" width="20px">
+            <use xlink:href="#edit"></use>
+          </svg>
+        </a>
+        <a (click)="openDeleteConfirmationModal(movie); $event.stopImmediatePropagation()" title="Delete" class="icon-button">
+          <svg height="20px" width="20px">
+            <use xlink:href="#trash"></use>
+          </svg>
+        </a>
+      </div>
+    </li>
+    <li class="movies__list-title" *ngIf="!movies.length">Sorry... There are no movies</li>
+  </ul>
+</div>
