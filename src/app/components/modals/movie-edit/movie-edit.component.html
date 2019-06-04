@@ -52,7 +52,7 @@
                [readonly]="viewMode"
                placeholder="Runtime, min"
                formControlName="Runtime"
-               type="number"
+               [type]="viewMode ? 'text' : 'number'"
                [value]="form.get('Runtime').value | movieRuntime : movie.imdbID">
 
         <mat-error *ngIf="form.get('Runtime').hasError('required')">
