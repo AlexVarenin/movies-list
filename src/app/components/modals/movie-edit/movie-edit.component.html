@@ -8,7 +8,7 @@
                placeholder="Title"
                formControlName="Title"
                [errorStateMatcher]="matcher"
-               [value]="form.get('Title').value | movieTitle">
+               [value]="viewMode ? (form.get('Title').value | movieTitle) : form.get('Title').value">
 
         <mat-error *ngIf="form.get('Title').hasError('required')">
           Title required
@@ -52,8 +52,7 @@
                [readonly]="viewMode"
                placeholder="Runtime, min"
                formControlName="Runtime"
-               [type]="viewMode ? 'text' : 'number'"
-               [value]="form.get('Runtime').value | movieRuntime : movie.imdbID">
+               [type]="viewMode ? 'text' : 'number'">
 
         <mat-error *ngIf="form.get('Runtime').hasError('required')">
           Runtime required
@@ -79,8 +78,7 @@
                [readonly]="viewMode"
                placeholder="Director"
                formControlName="Director"
-               [errorStateMatcher]="matcher"
-               [value]="form.get('Director').value | movieDirector : movie.imdbID">
+               [errorStateMatcher]="matcher">
 
         <mat-error *ngIf="form.get('Director').hasError('required')">
           Director required
@@ -89,7 +87,7 @@
       </mat-form-field>
 
       <button *ngIf="!viewMode" type="button" class="modal__button" mat-raised-button (click)="cancelForm()">Cancel</button>
-      <button *ngIf="!viewMode" type="submit" class="modal__button" mat-raised-button color="primary">Save</button>
+      <button *ngIf="!viewMode" type="submit" class="modal__button" mat-raised-button color="primary" [disabled]="!form.dirty">Save</button>
       <button *ngIf="viewMode" type="button" class="modal__button" mat-raised-button color="primary" (click)="cancelForm()">Close</button>
 
     </form>

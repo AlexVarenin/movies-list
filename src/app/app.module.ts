@@ -24,8 +24,6 @@ import { DeleteConfirmComponent } from './components/modals/delete-confirm/delet
 import { SearchComponent } from './components/header/search/search.component';
 
 // Pipes
-import { MovieRuntimePipe } from './pipes/runtime/movie-runtime.pipe';
-import { MovieDirectorPipe } from './pipes/director/movie-director.pipe';
 import { MovieTitlePipe } from './pipes/title/movie-title.pipe';
 
 // Services
@@ -42,15 +40,6 @@ import { reducers } from '@store/reducers';
 // Effects
 import { EffectsModule } from '@ngrx/effects';
 import { MoviesEffects } from '@store/effects/movies.effects';
-
-
-
-
-
-
-
-
-
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent,
@@ -84,16 +73,13 @@ const MATERIAL_MODULES = [
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
-    DefaultLayoutComponent,
     HeaderComponent,
     P404Component,
     MoviesComponent,
-    MovieTitlePipe,
     MovieEditComponent,
     DeleteConfirmComponent,
     SearchComponent,
-    MovieRuntimePipe,
-    MovieDirectorPipe
+    MovieTitlePipe,
   ],
   imports: [
     BrowserModule,
