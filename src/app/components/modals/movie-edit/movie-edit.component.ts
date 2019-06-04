@@ -12,14 +12,13 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import * as moviesActions from '@store/actions/movies.actions';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { titleExists, yearNotValid } from '@services/helpers/validators.validator';
+import { MovieTitlePipe } from '@app/pipes/title/movie-title.pipe';
 
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
-import { titleExists, yearNotValid } from '@services/helpers/validators.validator';
-
 
 const moment = _rollupMoment || _moment;
-
 
 export const MY_FORMATS = {
   parse: {
@@ -42,8 +41,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './movie-edit.component.html',
   styleUrls: ['./movie-edit.component.scss'],
   providers: [
+    MovieTitlePipe,
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
@@ -53,7 +52,7 @@ export class MovieEditComponent implements OnInit, OnDestroy {
   viewMode: boolean;
   matcher = new MyErrorStateMatcher();
   form: FormGroup;
-  minDate = moment().year(1895);
+  minDate = moment().year(1894);
   maxDate = moment();
 
   private readonly onDestroy = new Subject<void>();
@@ -62,7 +61,8 @@ export class MovieEditComponent implements OnInit, OnDestroy {
     private store: Store<fromRoot.State>,
     public dialogRef: MatDialogRef<MovieEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private titlePipe: MovieTitlePipe) {
   }
 
   ngOnInit() {
@@ -92,11 +92,11 @@ export class MovieEditComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.form = this.formBuilder.group({
-      Title: [this.movie.Title, [Validators.required], [titleExists(this.store, this.movie.imdbID)]],
+      Title: [this.movie.Title, [Validators.required], [titleExists(this.store, this.titlePipe, this.movie.imdbID)]],
       Year: [this.movie.Year ? moment().year(+this.movie.Year) : null, [Validators.required, yearNotValid]],
-      Runtime: [this.movie.Runtime, Validators.required],
+      Runtime: [this.initialRuntimeNormalize(this.movie.Runtime), Validators.required],
       Genre: [this.movie.Genre, Validators.required],
-      Director: [this.movie.Director, Validators.required],
+      Director: [this.initialDirectorNormalize(this.movie.Director), Validators.required],
     });
   }
 
@@ -112,24 +112,45 @@ export class MovieEditComponent implements OnInit, OnDestroy {
       this.showErrors();
       return;
     }
-    const newValues: {[key: string]: any} = this.form.value;
-    newValues.imdbID = this.movie.imdbID;
-    newValues.Year = newValues.Year.year().toString();
-    newValues.Runtime = `${newValues.Runtime} min`;
+    const formValues: {[key: string]: any} = this.normalizeFormValues(this.form.value);
+
     if (this.movie.imdbID) {
-      newValues.imdbID = this.movie.imdbID;
-      this.store.dispatch(new moviesActions.PatchEntityById(this.movie.imdbID, newValues));
+      formValues.imdbID = this.movie.imdbID;
+      this.store.dispatch(new moviesActions.PatchEntityById(this.movie.imdbID, formValues));
     } else {
-      this.store.dispatch(new moviesActions.CreateNewEntity(newValues));
+      this.store.dispatch(new moviesActions.CreateNewEntity(formValues));
     }
     this.onClose();
   }
 
-  cancelForm() {
+  cancelForm(): void {
     this.onClose();
   }
 
-  private showErrors() {
+  private initialRuntimeNormalize(runtime: string): number {
+    if (!runtime || runtime === 'N/A') {
+      return this.movie.imdbID ? 0 : null;
+    }
+    return +(runtime.replace(/[^0-9]/g, ''));
+  }
+
+  private initialDirectorNormalize(director: string): string {
+    if (!director || director === 'N/A') {
+      return this.movie.imdbID ? '-' : null;
+    }
+    return director;
+  }
+
+  private normalizeFormValues(values: {[key: string]: any}): {[key: string]: any} {
+    values.Title = values.Title.trim();
+    values.Year = values.Year.year().toString();
+    values.Runtime = `${values.Runtime} min`;
+    values.Genre = values.Genre.trim();
+    values.Director = values.Director.trim();
+    return values;
+  }
+
+  private showErrors(): void {
     Object.keys(this.form.controls).forEach(field => {
       this.form.get(field).markAsTouched({onlySelf: true});
     });

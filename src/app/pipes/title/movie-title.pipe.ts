@@ -11,10 +11,11 @@ export class MovieTitlePipe implements PipeTransform {
     }
     return title
       .toLowerCase()
-      .replace(/[^a-z, \n]/g, '')
+      .replace(/[^a-z, 0-9, \n]/g, '')
       .split(' ')
       .map( word => word.charAt(0).toUpperCase() + word.substring(1))
-      .join(' ');
+      .join(' ')
+      .trim();
   }
 
 }

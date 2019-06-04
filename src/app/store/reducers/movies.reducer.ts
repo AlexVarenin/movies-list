@@ -37,6 +37,7 @@ export function reducer(state = initialState, action: actions.Action) {
       movies[indx] = action.payload;
       const newState = {
         Search: movies,
+        totalResults: state.totalResults
       };
       return {
         ...state,
